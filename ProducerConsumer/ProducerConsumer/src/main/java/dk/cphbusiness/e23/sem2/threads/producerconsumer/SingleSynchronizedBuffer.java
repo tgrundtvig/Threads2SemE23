@@ -3,49 +3,44 @@ package dk.cphbusiness.e23.sem2.threads.producerconsumer;
 public class SingleSynchronizedBuffer<ProductType> implements ISyncBuffer<ProductType>
 {
 	private ProductType product;
-	private Object teddyBear;
 
 	public SingleSynchronizedBuffer()
 	{
 		product = null;
-		teddyBear = new Object();
 	}
 
 	public void addProduct(ProductType product)
 	{
-		synchronized (teddyBear)
+		synchronized (this)
 		{
 			while (this.product != null)
 			{
 				try
 				{
-					teddyBear.wait(); //This releases the lock on teddyBear
+					this.wait(); //This releases the lock on teddyBear
 				} catch (InterruptedException e)
 				{
 				}
 			}
 			this.product = product;
-			teddyBear.notifyAll();
+			this.notifyAll();
 		} //This releases the lock on teddyBear
 	}
 
-	public ProductType getProduct()
+	public synchronized ProductType getProduct()
 	{
-		synchronized (teddyBear)
+		while (product == null)
 		{
-			while (product == null)
+			try
 			{
-				try
-				{
-					teddyBear.wait(); //This releases the lock on teddyBear
-				} catch (InterruptedException e)
-				{
-				}
+				this.wait(); //This releases the lock on teddyBear
+			} catch (InterruptedException e)
+			{
 			}
-			ProductType temp = product;
-			product = null;
-			teddyBear.notifyAll();
-			return temp;
-		} //This releases the lock on teddyBear
+		}
+		ProductType temp = product;
+		product = null;
+		this.notifyAll();
+		return temp;
 	}
 }
