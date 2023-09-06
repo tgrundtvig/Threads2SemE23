@@ -3,5 +3,8 @@ package dk.cphbusiness.e23.sem2.threads.producerconsumer;
 public interface ISyncBuffer<ProductType>
 {
 	void addProduct(ProductType product);
-	ProductType getProduct();
+	ProductType getProductBlocking();
+	ProductType getProductUnblocking();
+	int getSize();
+	int getCapacity();
 }

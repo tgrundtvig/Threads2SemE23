@@ -6,7 +6,7 @@ public class Classroom
 {
 	public static void main(String[] args)
 	{
-		ISyncBuffer<Question> box = new SingleSynchronizedBuffer<>();
+		ISyncBuffer<Question> box = new SynchronizedBuffer<>(16);
 		ArrayList<Student> students = new ArrayList<>();
 		students.add(new Student("Alice", box));
 		students.add(new Student("Bob", box));
@@ -18,6 +18,11 @@ public class Classroom
 		teachers.add(new Teacher("Mr. Anderson", box));
 		teachers.add(new Teacher("Mrs. Brown", box));
 		teachers.add(new Teacher("Mr. Clark", box));
+		teachers.add(new Teacher("Mrs. Davis", box));
+		teachers.add(new Teacher("Mr. Evans", box));
+		teachers.add(new Teacher("Mrs. Fisher", box));
+		teachers.add(new Teacher("Mr. Green", box));
+		teachers.add(new Teacher("Mrs. Hill", box));
 		for(Student student : students)
 		{
 			new Thread(student).start();

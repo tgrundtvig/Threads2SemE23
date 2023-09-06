@@ -27,7 +27,7 @@ public class SingleSynchronizedBuffer<ProductType> implements ISyncBuffer<Produc
 		} //This releases the lock on teddyBear
 	}
 
-	public synchronized ProductType getProduct()
+	public synchronized ProductType getProductBlocking()
 	{
 		while (product == null)
 		{
@@ -42,5 +42,30 @@ public class SingleSynchronizedBuffer<ProductType> implements ISyncBuffer<Produc
 		product = null;
 		this.notifyAll();
 		return temp;
+	}
+
+	@Override
+	public ProductType getProductUnblocking()
+	{
+		while (product == null)
+		{
+			return null;
+		}
+		ProductType temp = product;
+		product = null;
+		this.notifyAll();
+		return temp;
+	}
+
+	@Override
+	public synchronized int getSize()
+	{
+		return (product == null ? 0 : 1);
+	}
+
+	@Override
+	public int getCapacity()
+	{
+		return 1;
 	}
 }

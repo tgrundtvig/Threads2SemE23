@@ -19,7 +19,8 @@ public class Teacher implements Runnable
 		Random rnd = new Random();
 		while(true)
 		{
-			Question question = box.getProduct();
+			System.out.println("Box size: " + box.getSize());
+			Question question = box.getProductBlocking();
 			int result = question.getN1() + question.getN2();
 			question.setResult(result);
 			System.out.println(name + " answered: " +
